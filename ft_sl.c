@@ -6,7 +6,7 @@
 /*   By: bordenoy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 19:51:02 by bordenoy          #+#    #+#             */
-/*   Updated: 2019/02/28 22:25:19 by bordenoy         ###   ########.fr       */
+/*   Updated: 2019/03/01 17:26:32 by bordenoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,15 @@ void get_dir(DIR *rep, t_ls *ar)
 
 t_ls *ft_make_lr(char *b)
 {
-	size_t i;
 	struct stat filestat;
 	t_ls *ar;
 
-	stat(b, &filestat);
-	i = 0;
-	i = ft_count_me(b);
-	ar = (t_ls *)malloc(sizeof(t_ls) * (i + 1));
-	if (S_ISREG(filestat.st_mode))
+	ar = (t_ls *)malloc(sizeof(t_ls) * (ft_count_me(b) + 1));
+	if ((stat(b, &filestat) < 0) || S_ISREG(filestat.st_mode))
 	{
 		ar[0] = ft_make_one(b,1);
 		ar[1] = ft_make_one(NULL,0);
+		return (ar);
 	}
 	if (S_ISDIR(filestat.st_mode))
 		get_dir(opendir(b), ar);
@@ -84,28 +81,14 @@ void ft_ls(int ac, char **av)
 	t_opt al;
 	int i;
 
-	i = parse_option(*av, &al);
-	if (i < 0)
+	if ((i = parse_option(*av, &al)) < 0)
 		return ;
 	if (i > 0)
-	{
-		ac--;
-		av++;
-	}
-	i = 0;
+		ac-- && av++;
 	if (ac == 0 || ac == 1)
 		ar = ft_take(*av);
 	else
-	{
-		ar = (t_ls *)malloc(sizeof(t_ls) * (ac + 1));
-		while (*av)
-		{
-			ar[i] = ft_make_one(*av++, (i + 1));
-			i++;
-		}
-		ar[i].pos = 0;
-	}
-	i = 0;
-	//ft_range(ar);
-	//ft_begin(ar, al);
+		ar = ft_male(ac, av);
+	ft_range(ar, al);
+	ft_brise(ar, al, ac > 1);
 }

@@ -6,7 +6,7 @@
 /*   By: bordenoy <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 19:44:08 by bordenoy          #+#    #+#             */
-/*   Updated: 2019/02/28 21:50:50 by bordenoy         ###   ########.fr       */
+/*   Updated: 2019/03/01 17:26:45 by bordenoy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ int	parse_option(char *opt, t_opt *opts)
 				return (-1);
 			return (1);
 		}
-		opts->opt = 4;
+		opts->opt = make_opt(opt);
 		i = 1;
 	}
-	return (0);
+	return (i);
 }
 
 size_t ft_getsize(t_ls *b)
